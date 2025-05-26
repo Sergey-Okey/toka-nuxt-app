@@ -96,7 +96,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTaskStore } from '~/stores/taskStore' // Путь под твой проект, если auto import не настроен
 
 const router = useRouter()
 const taskStore = useTaskStore()

@@ -6,12 +6,9 @@ export default defineNuxtConfig({
     '@/assets/styles/main.scss',
     '@/assets/styles/base.scss',
     'material-icons/iconfont/material-icons.css',
-    'vuetify/styles',
   ],
   components: true,
-  modules: ['@pinia/nuxt'],
-  build: {
-    transpile: ['vuetify'],
-  },
-  plugins: ['~/plugins/vuetify.ts'],
+  modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
+  build: {},
+  plugins: [],
 })

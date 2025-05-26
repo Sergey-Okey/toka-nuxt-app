@@ -1,4 +1,4 @@
 <template>
-  <div class="dashboard"></div>
+  <Dashboard />
 </template>
 <script setup lang="ts"></script>

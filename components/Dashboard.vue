@@ -104,6 +104,10 @@
 </template>
 
 <script setup>
+import AnalyticsWidget from './widgets/AnalyticsWidget.vue'
+import ChartWidget from './widgets/ChartWidget.vue'
+import ProductivityWidget from './widgets/ProductivityWidget.vue'
+
 const taskStore = useTaskStore()
 const { formatDate } = useDate()
 

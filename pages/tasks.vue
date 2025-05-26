@@ -1,5 +1,7 @@
 <template>
-  <div class="tasks-page"></div>
+  <div class="tasks-page">
+    <TaskManager />
+  </div>
 </template>
 
 <script setup></script>

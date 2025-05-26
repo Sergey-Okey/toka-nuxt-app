@@ -130,8 +130,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import type { Ref } from 'vue'
 
 const integrations = ref([
   { name: 'Google Calendar', img: '/images/logos/google-calendar.png' },

@@ -14,8 +14,21 @@
       @click="openColorPicker"
       :aria-label="'Выбрать цвет'"
     >
-      <svg class="palette-icon" viewBox="0 0 24 24" width="18" height="18" fill="none">
-        <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2" fill="none" />
+      <svg
+        class="palette-icon"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="#fff"
+          stroke-width="2"
+          fill="none"
+        />
         <circle cx="8" cy="10" r="1.5" fill="#fff" />
         <circle cx="16" cy="10" r="1.5" fill="#fff" />
         <circle cx="9" cy="15" r="1.5" fill="#fff" />
@@ -26,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import type { Ref } from 'vue'
 const props = defineProps<{ modelValue: string }>()
 const emit = defineEmits(['update:modelValue'])
 const colorInput = ref<HTMLInputElement | null>(null)
