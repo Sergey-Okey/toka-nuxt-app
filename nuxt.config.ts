@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   css: [
     '@/assets/styles/main.scss',
     '@/assets/styles/base.scss',
+    'material-icons/iconfont/material-icons.css',
     'vuetify/styles',
   ],
   components: true,

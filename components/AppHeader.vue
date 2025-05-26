@@ -2,8 +2,8 @@
   <header class="header">
     <div class="header-container">
       <div class="logo">
-        <img src="../assets/images/logo.svg" alt="logo" />
-        <router-link class="logo-text" to="/">Toka</router-link>
+        <img src="/assets/images/logo.svg" alt="logo" />
+        <NuxtLink class="logo-text" to="/">Toka</NuxtLink>
       </div>
 
       <div class="header-right">
@@ -13,7 +13,7 @@
           @click="toggleMenu"
           :class="{ open: isOpen }"
           aria-label="Toggle navigation menu"
-          aria-expanded="isOpen"
+          :aria-expanded="isOpen.toString()"
         >
           <span class="burger-line"></span>
           <span class="burger-line"></span>
@@ -25,14 +25,10 @@
           @click="handleNavClick"
           aria-label="Main navigation"
         >
-          <router-link class="link-header" to="/">Главная</router-link>
-          <router-link class="link-header" to="/dashboard"
-            >Dashboard</router-link
-          >
-          <router-link class="link-header" to="/tasks">Задачи</router-link>
-          <router-link class="link-header" to="/calendar"
-            >Календарь</router-link
-          >
+          <nuxtLink class="link-header" to="/">Главная</nuxtLink>
+          <nuxtLink class="link-header" to="/dashboard">Dashboard</nuxtLink>
+          <nuxtLink class="link-header" to="/tasks">Задачи</nuxtLink>
+          <nuxtLink class="link-header" to="/calendar">Календарь</nuxtLink>
         </nav>
 
         <button
@@ -52,26 +48,22 @@
 </template>
 
 <script setup lang="ts">
-import Button from './Button.vue'
-
-const route = useRoute()
 const isOpen = ref(false)
 const isLoggedIn = ref(true)
 const isMobile = ref(false)
 const darkMode = ref(false)
 
-// Проверка размера экрана
+const route = useRoute()
+
 const checkScreenSize = () => {
   isMobile.value = window.innerWidth <= 768
 }
 
-// Переключение меню
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
   updateBodyOverflow()
 }
 
-// Закрытие меню
 const closeMenu = () => {
   if (isOpen.value) {
     isOpen.value = false
@@ -79,54 +71,62 @@ const closeMenu = () => {
   }
 }
 
-// Управление overflow body
 const updateBodyOverflow = () => {
-  document.body.style.overflow = isOpen.value ? 'hidden' : ''
+  if (process.client) {
+    document.body.style.overflow = isOpen.value ? 'hidden' : ''
+  }
 }
 
-// Обработчик клика по навигации
 const handleNavClick = (event: Event) => {
   if ((event.target as HTMLElement).closest('.link-header')) {
     closeMenu()
   }
 }
 
-// Переключение темы
 const toggleTheme = () => {
   darkMode.value = !darkMode.value
   updateTheme()
 }
 
-// Обновление темы
 const updateTheme = () => {
+  if (!process.client) return
+  const root = document.documentElement
   if (darkMode.value) {
-    document.documentElement.classList.remove('light-mode')
+    root.classList.remove('light-mode')
   } else {
-    document.documentElement.classList.add('light-mode')
+    root.classList.add('light-mode')
   }
   localStorage.setItem('darkMode', darkMode.value.toString())
 }
 
-// Дебаунс ресайза
+const debounce = (fn: Function, delay: number) => {
+  let timeoutId: number
+  return (...args: any[]) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => fn(...args), delay)
+  }
+}
+
 const handleResize = debounce(() => {
+  if (!process.client) return
   checkScreenSize()
   if (!isMobile.value) {
     closeMenu()
   }
 }, 100)
 
-// Следим за изменением маршрута
 watch(
   () => route.path,
-  () => closeMenu()
+  () => {
+    closeMenu()
+  }
 )
 
-// Инициализация при монтировании
 onMounted(() => {
+  if (!process.client) return
   checkScreenSize()
   window.addEventListener('resize', handleResize)
 
-  // Восстановление темы
   const savedMode = localStorage.getItem('darkMode')
   if (savedMode !== null) {
     darkMode.value = savedMode === 'true'
@@ -134,20 +134,11 @@ onMounted(() => {
   }
 })
 
-// Очистка при размонтировании
 onBeforeUnmount(() => {
+  if (!process.client) return
   window.removeEventListener('resize', handleResize)
   document.body.style.overflow = ''
 })
-
-// Функция дебаунса
-function debounce(fn: Function, delay: number) {
-  let timeoutId: number
-  return (...args: any[]) => {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => fn(...args), delay)
-  }
-}
 </script>
 
 <style lang="scss" scoped>
